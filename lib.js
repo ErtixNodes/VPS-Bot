@@ -1,4 +1,19 @@
 const db = require('./db');
+const rateLimits = {};
+
+async function checkRateLimit(key, seconds) {
+    const currentTime = Date.now();
+    if (rateLimits[key] && rateLimits[key] > currentTime) {
+        return true;
+    }
+    return false;
+}
+
+async function setRateLimit(key, seconds) {
+    const expireTime = Date.now() + (seconds * 1000);
+    rateLimits[key] = expireTime;
+}
+
 
 async function checkAdmin(command, interaction) {
     if (command.requiresAdmin == false) return false;
@@ -51,5 +66,7 @@ async function error(interaction, message, edit) {
 module.exports = {
     checkAdmin,
     getUser,
-    error
+    error,
+    checkRateLimit,
+    setRateLimit
 };
