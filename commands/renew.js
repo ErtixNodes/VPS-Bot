@@ -28,6 +28,8 @@ class CMD extends SlashCommand {
 
         var user = await lib.getUser(interaction);
 
+	if (user.balance < 10) return await lib.error(interaction, 'You need at least 10 credits.');
+
         var ID = interaction.options.getInteger('id');
 
         const db = require('../db');
@@ -48,15 +50,18 @@ class CMD extends SlashCommand {
         const dayjs = require('dayjs');
 
         if (!VPS.type) VPS.type = 'alpine';
-        VPS.expiry = dayjs().add(3, 'day');
+        VPS.expiry = dayjs(VPS.expiry).add(4, 'day');
 
         await VPS.save();
+
+	user.balance = user.balance - 10;
+	await user.save();
 
         const { time } = require('discord.js');
 
         const ex = time(  new Date(VPS.expiry) , 'R');
 
-        interaction.editReply(`VPS Renewed! Expiry: ${ex}`);
+        interaction.editReply(`VPS Renewed! Expiry: ${ex} | Balance: ${user.balance}`);
     }
 
 }

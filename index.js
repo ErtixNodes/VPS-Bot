@@ -78,7 +78,7 @@ client.on('ready', async () => {
 
 
     checkExpiry();
-    setInterval(checkExpiry, 30 * 1000);
+    setInterval(checkExpiry, 1 * 1000);
 
 
     updateStatus();
@@ -271,30 +271,29 @@ async function calculateNodeSize() {
     log('> Checked nodes!');
 }
 
-client.on('messageCreate', async (msg) => {
-    if (timeOut[msg.author.id]) {
-        console.log(`User has timeout`);
-        return;
-    }
+// client.on('messageCreate', async (msg) => {
+//     if (timeOut[msg.author.id]) {
+//         console.log(`User has timeout`);
+//         return;
+//     }
 
-    var lib = require('./lib');
-    var user = await lib.getUser(msg, true);
+//     var lib = require('./lib');
+//     var user = await lib.getUser(msg, true);
 
-    user.balance = user.balance + 1;
-    await user.save();
-    timeOut[msg.author.id] = true;
-    setTimeout(() => {
-        console.log(`Remove msg timeout`);
-        delete timeOut[msg.author.id];
-    }, 5 * 1000);
-})
+//     user.balance = user.balance + 1;
+//     await user.save();
+//     timeOut[msg.author.id] = true;
+//     setTimeout(() => {
+//         console.log(`Remove msg timeout`);
+//         delete timeOut[msg.author.id];
+//     }, 5 * 1000);
+// })
 
 async function checkExpiry() {
-    if (isChecking == true) return log('is checking');
+    if (isChecking == true) return;
 
     isChecking = true;
 
-    log('> Checking expiry')
     const db = require('./db');
     var VPS = await db.VPS.find({
         expiry: {
@@ -302,7 +301,7 @@ async function checkExpiry() {
         }
     });
 
-    log(`> Found ${VPS.length} expired vps!`);
+    if (VPS.length > 0) log(`> Found ${VPS.length} expired vps!`);
 
     const channel = client.channels.cache.get(process.env.CH_EXPIRY);
 

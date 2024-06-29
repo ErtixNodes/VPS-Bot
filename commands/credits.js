@@ -20,7 +20,7 @@ class CMD extends SlashCommand {
 
         var user = await lib.getUser(interaction);
         
-        interaction.reply(`**Your balance:** ${user.balance/100}. For each message you send, you get 0.01 credits.`)
+        interaction.reply(`**Your balance:** :coin: ${user.balance}. Execute \`/earn\` to earn credits.`)
     }
 
 }

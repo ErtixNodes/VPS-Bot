@@ -34,7 +34,8 @@ async function getUser(interaction, isMessage) {
             plan: 'free',
             isBanned: false,
             banReason: '',
-            portLimit: 10
+            portLimit: 10,
+            lastEarn: 0
         });
         await user.save();
 

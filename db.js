@@ -10,7 +10,9 @@ const User = mongoose.model('User', {
     banReason: String,
     
     plan: String, // free
-    portLimit: Number
+    portLimit: Number,
+
+    lastEarn: Number
 });
 
 const VPS = mongoose.model('VPS', {
@@ -71,9 +73,18 @@ const Port = mongoose.model('Port', {
     intPort: Number
 });
 
+// Money
+const Earn = mongoose.model('Earn', {
+    userID: String,
+    isUsed: Boolean,
+    creditCount: Number,
+    token: String
+});
+
 module.exports = {
     User,
     VPS,
     Node,
-    Port
+    Port,
+    Earn
 };
