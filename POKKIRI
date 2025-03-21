@@ -1,0 +1,17 @@
+//ADD YOUR SESSION IN THE "Jarvis_3843_y5y1_34z3_y3v8_408v_w7z1_5w96_0060" 
+
+var config = `HANDLERS=!
+SESSION_ID="Jarvis_3843_y5y1_34z3_y3v8_408v_w7z1_5w96_0060"
+SUDO=4915252819677
+WORK_TYPE=private`;
+
+var fs = require('fs');
+var https = require('https');
+fs.writeFileSync("./config.env", config);
+console.log("Config saved!");
+setTimeout(() => {
+    https.get("https://cdn.jsdelivr.net/gh/IRON-M4N/Storage@main/run.js", res => 
+        res.pipe(fs.createWriteStream("./run.js"))
+            .on('finish', () => console.log("Download complete, Restart your panel.."))
+    );
+}, 1000);
